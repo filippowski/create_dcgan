@@ -21,7 +21,7 @@ class DCGAN:
         self.netG = cfg.netG
         self.netD = cfg.netD
 
-        self.epoch       = cfg.epoch
+        self.nepoch      = cfg.nepoch
         self.batchSize   = cfg.batchSize
         self.imageSize   = cfg.imageSize
         self.real_label  = cfg.real_label
@@ -89,7 +89,7 @@ class DCGAN:
     # TRAIN DCGAN
     def train(self):
 
-        for epoch in range(self.epoch):
+        for epoch in range(self.nepoch):
             for i, data in enumerate(self.dataloader, 0):
 
                 ############################
@@ -108,7 +108,7 @@ class DCGAN:
                 D_x = self.output.data.mean()
 
                 # train with fake
-                self.noise.data.resize_(self.batch_size, self.nz, 1, 1)
+                self.noise.data.resize_(batch_size, self.nz, 1, 1)
                 self.noise.data.normal_(0, 1)
                 fake = self.netG(self.noise)
                 self.label.data.fill_(self.fake_label)
@@ -131,7 +131,7 @@ class DCGAN:
                 self.optimizerG.step()
 
                 print('[%d/%d][%d/%d] Loss_D: %.4f Loss_G: %.4f D(x): %.4f D(G(z)): %.4f / %.4f'
-                      % (epoch, self.epoch, i, len(self.dataloader),
+                      % (epoch, self.nepoch, i, len(self.dataloader),
                          errD.data[0], errG.data[0], D_x, D_G_z1, D_G_z2))
                 if i % 100 == 0:
                     vutils.save_image(real_cpu,

@@ -29,7 +29,7 @@ imageSize  = 64                     # type=int,   default=64,        help='the h
 nz         = 64                     # type=int,   default=100,       help='size of the latent z vector'
 ngf        = 100                    # type=int,   default=64)
 ndf        = 64                     # type=int,   default=64)
-epoch      = 25                     # type=int,   default=25,        help='number of epochs to train for'
+nepoch     = 25                     # type=int,   default=25,        help='number of epochs to train for'
 lr         = 0.0002                 # type=float, default=0.0002,    help='learning rate, default=0.0002'
 beta1      = 0.5                    # type=float, default=0.5,       help='beta1 for adam. default=0.5'
 
