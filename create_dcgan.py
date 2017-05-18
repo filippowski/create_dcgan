@@ -76,7 +76,7 @@ class DCGAN:
         # setup optimizer
         self.optimizerD = optim.Adam(self.netD.parameters(), lr=self.lr, betas=(self.beta1, 0.999))
         self.optimizerG = optim.Adam(self.netG.parameters(), lr=self.lr, betas=(self.beta1, 0.999))
-        
+
 
     def run_cuda(self):
         if self.cuda:
@@ -152,5 +152,5 @@ if __name__ == '__main__':
 
     dcgan = DCGAN()
 
-    dcgan.create()
+    dcgan.setup()
     dcgan.train()
