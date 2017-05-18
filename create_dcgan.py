@@ -49,14 +49,14 @@ class DCGAN:
     def create(self):
 
         print('Generator net: ')
-        netG = _netG(self.ngpu)
+        netG = _netG(self.ngpu, self.nz, self.ngf, self.nc)
         netG.apply(weights_init)
         if self.netG != '':
             netG.load_state_dict(torch.load(self.netG))
         print_params(netG)
 
         print('Discriminator net: ')
-        netD = _netD(ngpu)
+        netD = _netD(self.ngpu, self.nz, self.ndf, self.nc)
         netD.apply(weights_init)
         if self.netD != '':
             netD.load_state_dict(torch.load(self.netD))
