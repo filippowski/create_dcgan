@@ -1,3 +1,7 @@
+import torch
+import torch.nn as nn
+import torch.nn.parallel
+
 class _netG(nn.Module):
 
     def __init__(self, ngpu):

@@ -4,6 +4,7 @@ from netG import _netG
 from netD import _netD
 from util import print_params, weights_init
 import torchvision.utils as vutils
+from torch.autograd import Variable
 
 #######################################################################################################################
 
@@ -34,14 +35,6 @@ class DCGAN:
         self.lr          = cfg.lr
         self.beta1       = cfg.beta1
 
-        self.cuda = cfg.cuda
-        if self.cuda:
-            self.netD.cuda()
-            self.netG.cuda()
-            self.loss.cuda()
-            self.input, self.label       = self.input.cuda(), self.label.cuda()
-            self.noise, self.fixed_noise = self.noise.cuda(), self.fixed_noise.cuda()
-
         self.loss = loss
 
         # setup optimizer
@@ -50,7 +43,7 @@ class DCGAN:
 
         self.dataloader = cfg.dataloader
         self.outf       = cfg.outf
-
+        self.cuda       = cfg.cuda
 
     # CREATE DCGAN
     def create(self):
@@ -72,6 +65,13 @@ class DCGAN:
         self.netG = netG
         self.netD = netD
 
+    def run_cuda(self):
+        if self.cuda:
+            self.netD.cuda()
+            self.netG.cuda()
+            self.loss.cuda()
+            self.input, self.label = self.input.cuda(), self.label.cuda()
+            self.noise, self.fixed_noise = self.noise.cuda(), self.fixed_noise.cuda()
 
     # TRAIN DCGAN
     def train(self):
