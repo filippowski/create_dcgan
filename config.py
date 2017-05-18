@@ -5,7 +5,6 @@ import torch
 import torch.nn as nn
 import torch.nn.parallel
 import torch.backends.cudnn as cudnn
-import torch.optim as optim
 import torch.utils.data
 import torchvision.datasets as dset
 import torchvision.transforms as transforms
@@ -13,8 +12,9 @@ import torchvision.transforms as transforms
 #***********************************************************************************************************
 # PATHS
 #***********************************************************************************************************
-dataset    = ''                     # required=True,               help='cifar10 | lsun | imagenet | folder | lfw '
-dataroot   = ''                     # required=True,               help='path to dataset'
+dataset    = 'lsun'                 # required=True,               help='cifar10 | lsun | imagenet | folder | lfw '
+dataroot   = '/root/vitalii/PYTORCH/dcgan/EMOJI_dataset'
+                                    # required=True,               help='path to dataset'
 
 netG       = ''                     # default='',                  help="path to netG (to continue training)"
 netD       = ''                     # default='',                  help="path to netD (to continue training)"

@@ -5,6 +5,7 @@ from netD import _netD
 from util import print_params, weights_init
 import torchvision.utils as vutils
 from torch.autograd import Variable
+import torch.optim as optim
 
 #######################################################################################################################
 
@@ -35,15 +36,14 @@ class DCGAN:
         self.lr          = cfg.lr
         self.beta1       = cfg.beta1
 
-        self.loss = loss
+        self.loss        = cfg.loss
 
-        # setup optimizer
-        self.optimizerD = optim.Adam(netD.parameters(), lr=self.lr, betas=(self.beta1, 0.999))
-        self.optimizerG = optim.Adam(netG.parameters(), lr=self.lr, betas=(self.beta1, 0.999))
+        self.optimizerG  = None
+        self.optimizerD  = None
 
-        self.dataloader = cfg.dataloader
-        self.outf       = cfg.outf
-        self.cuda       = cfg.cuda
+        self.dataloader  = cfg.dataloader
+        self.outf        = cfg.outf
+        self.cuda        = cfg.cuda
 
     # CREATE DCGAN
     def create(self):
@@ -64,6 +64,19 @@ class DCGAN:
 
         self.netG = netG
         self.netD = netD
+
+
+    def setup(self):
+        # create G and D nets
+        self.create()
+
+        # if cuda available, run with it
+        self.run_cuda()
+
+        # setup optimizer
+        self.optimizerD = optim.Adam(self.netD.parameters(), lr=self.lr, betas=(self.beta1, 0.999))
+        self.optimizerG = optim.Adam(self.netG.parameters(), lr=self.lr, betas=(self.beta1, 0.999))
+        
 
     def run_cuda(self):
         if self.cuda:
