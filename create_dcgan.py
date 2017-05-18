@@ -48,14 +48,14 @@ class DCGAN:
     # CREATE DCGAN
     def create(self):
 
-        print('Generator net: ')
+        print('\n\nGenerator net: ')
         netG = _netG(self.ngpu, self.nz, self.ngf, self.nc)
         netG.apply(weights_init)
         if self.netG != '':
             netG.load_state_dict(torch.load(self.netG))
         print_params(netG)
 
-        print('Discriminator net: ')
+        print('\n\nDiscriminator net: ')
         netD = _netD(self.ngpu, self.nz, self.ndf, self.nc)
         netD.apply(weights_init)
         if self.netD != '':
@@ -100,7 +100,7 @@ class DCGAN:
                 real_cpu, _ = data
                 batch_size = real_cpu.size(0)
                 self.input.data.resize_(real_cpu.size()).copy_(real_cpu)
-                self.label.data.resize_(batch_size).fill_(real_label)
+                self.label.data.resize_(batch_size).fill_(self.real_label)
 
                 self.output = self.netD(self.input)
                 errD_real   = self.loss(self.output, self.label)
@@ -108,10 +108,10 @@ class DCGAN:
                 D_x = self.output.data.mean()
 
                 # train with fake
-                self.noise.data.resize_(batch_size, nz, 1, 1)
+                self.noise.data.resize_(self.batch_size, self.nz, 1, 1)
                 self.noise.data.normal_(0, 1)
-                fake = self.netG(noise)
-                self.label.data.fill_(fake_label)
+                fake = self.netG(self.noise)
+                self.label.data.fill_(self.fake_label)
                 self.output = self.netD(fake.detach())
                 errD_fake = self.loss(self.output, self.label)
                 errD_fake.backward()
@@ -123,9 +123,9 @@ class DCGAN:
                 # (2) Update G network: maximize log(D(G(z)))
                 ###########################
                 self.netG.zero_grad()
-                self.label.data.fill_(real_label)  # fake labels are real for generator cost
+                self.label.data.fill_(self.real_label)  # fake labels are real for generator cost
                 self.output = self.netD(fake)
-                errG = self.loss(output, label)
+                errG = self.loss(self.output, self.label)
                 errG.backward()
                 D_G_z2 = self.output.data.mean()
                 self.optimizerG.step()
@@ -137,7 +137,7 @@ class DCGAN:
                     vutils.save_image(real_cpu,
                                       '%s/real_samples.png' % self.outf,
                                       normalize=True)
-                    fake = netG(fixed_noise)
+                    fake = netG(self.fixed_noise)
                     vutils.save_image(fake.data,
                                       '%s/fake_samples_epoch_%03d.png' % (self.outf, epoch),
                                       normalize=True)

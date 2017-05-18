@@ -41,11 +41,11 @@ loss       = nn.BCELoss()           # loss function
 #***********************************************************************************************************
 nc         = 3
 workers    = 2                      # type=int, default=2,         help='number of data loading workers'
-cuda       = True                   # action='store_true',         help='enables cuda'
 ngpu       = 8                      # type=int, default=1,        help='number of GPUs to use'
-seed       = None                   # type=int,                    help='manual seed'
 real_label = 1
 fake_label = 0
+cuda       = True                   # action='store_true',         help='enables cuda'
+seed       = None                   # type=int,                    help='manual seed'
 #***********************************************************************************************************
 
 try:
