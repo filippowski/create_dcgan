@@ -137,7 +137,7 @@ class DCGAN:
                     vutils.save_image(real_cpu,
                                       '%s/real_samples.png' % self.outf,
                                       normalize=True)
-                    fake = netG(self.fixed_noise)
+                    fake = self.netG(self.fixed_noise)
                     vutils.save_image(fake.data,
                                       '%s/fake_samples_epoch_%03d.png' % (self.outf, epoch),
                                       normalize=True)
