@@ -1,5 +1,4 @@
 
-
 def print_params(net):
     print('\nArchitecture: ')
     print(net)
